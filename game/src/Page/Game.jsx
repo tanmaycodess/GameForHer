@@ -4,7 +4,7 @@ import { Joystick } from 'react-joystick-component';
 import BG1 from '../assets/BG1.jpg';
 import BG2 from '../assets/BG2.jpg';
 import BG3 from '../assets/BG3.jpg';
-import She from '../assets/She.jpg';
+import She from '../assets/she.jpg';
 import ME from '../assets/ME.png';
 import US from '../assets/US.jpg'
 
