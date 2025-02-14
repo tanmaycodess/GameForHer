@@ -7,6 +7,7 @@ import BG3 from '../assets/BG3.jpg';
 import She from '../assets/she.jpg';
 import ME from '../assets/ME.png';
 import US from '../assets/US.jpg'
+import AchievementNotification from './Achievement';
 
 
 const MovementGame = () => {
@@ -523,35 +524,41 @@ const MovementGame = () => {
         // Add sound implementation here if needed
     };
 
+    
+
     return (
         <div className="fixed inset-0 flex flex-col bg-gray-900 text-white touch-none">
             {/* Start Screen */}
             {!gameStarted && (
-                <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-50">
-                    <div className="bg-gray-800 p-8 rounded-2xl w-11/12 max-w-md m-4 text-center">
-                        <h1 className="text-3xl font-bold mb-6">HAPPY VALENTINE BABYYY 😘</h1>
-                        <p className="text-lg font-medium text-gray-300 mb-6">{staticMessage}</p>
-                        <div className="mb-6">
-                            <h2 className="text-xl font-semibold mb-2">High Score: {highScore}</h2>
-                            {achievements.length > 0 && (
-                                <div className="flex justify-center gap-2">
-                                    {achievements.map((achievement, index) => (
-                                        <Trophy key={index} className="w-6 h-6 text-yellow-400" />
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-                        <div className="flex flex-col gap-4">
+                <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-50 p-4">
+                    <div className="bg-gray-800/95 p-6 md:p-8 rounded-3xl w-full max-w-md shadow-2xl">
+                        <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center bg-gradient-to-r from-pink-500 to-purple-500 bg-clip-text text-transparent">
+                            HAPPY VALENTINE BABYYY 😘
+                        </h1>
+                        <p className="text-base md:text-lg text-gray-300 mb-6 leading-relaxed">
+                            {staticMessage}
+                        </p>
+                        <div className="space-y-4">
+                            <div className="bg-gray-700/50 p-4 rounded-2xl">
+                                <h2 className="text-xl font-semibold mb-2 text-center">High Score: {highScore}</h2>
+                                {achievements.length > 0 && (
+                                    <div className="flex justify-center gap-2">
+                                        {achievements.map((achievement, index) => (
+                                            <Trophy key={index} className="w-6 h-6 text-yellow-400 animate-pulse" />
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
                             <button
                                 onClick={() => setGameStarted(true)}
-                                className="w-full px-6 py-4 bg-blue-500 rounded-xl text-lg font-semibold hover:bg-blue-600 active:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                                className="w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl text-lg font-semibold hover:from-blue-600 hover:to-blue-700 active:from-blue-700 active:to-blue-800 transition-all transform hover:scale-105 flex items-center justify-center gap-2 shadow-lg"
                             >
                                 <Play className="w-6 h-6" />
                                 Start Game
                             </button>
                             <button
                                 onClick={() => setShowSettings(true)}
-                                className="w-full px-6 py-4 bg-gray-700 rounded-xl text-lg font-semibold hover:bg-gray-600 active:bg-gray-500 transition-colors flex items-center justify-center gap-2"
+                                className="w-full px-6 py-4 bg-gray-700/50 rounded-2xl text-lg font-semibold hover:bg-gray-600/50 active:bg-gray-500/50 transition-all flex items-center justify-center gap-2"
                             >
                                 <Settings className="w-6 h-6" />
                                 Settings
@@ -561,66 +568,40 @@ const MovementGame = () => {
                 </div>
             )}
 
-
-            {/* Game Header */}
-            <div className="flex items-center justify-between p-4 bg-gray-800/90 backdrop-blur-sm">
-                <div className="flex items-center space-x-4">
-                    <div className="flex items-center">
-                        <Trophy className="w-6 h-6 text-yellow-400 mr-2" />
-                        <span className="text-2xl font-bold">{score}</span>
+            {/* Game Header - Simplified for mobile */}
+            <div className="flex items-center justify-between p-3 bg-gray-800/95 backdrop-blur-md">
+                <div className="flex items-center space-x-3">
+                    <div className="flex items-center bg-gray-700/50 px-3 py-1 rounded-full">
+                        <Trophy className="w-5 h-5 text-yellow-400 mr-2" />
+                        <span className="text-xl font-bold">{score}</span>
                     </div>
                     <div className="flex items-center space-x-1">
                         {[...Array(lives)].map((_, i) => (
                             <Heart key={i} className="w-5 h-5 text-red-500" fill="currentColor" />
                         ))}
                     </div>
-                    {isImmune && (
-                        <Shield className="w-6 h-6 text-blue-400 animate-pulse" />
-                    )}
-                    <div className="flex items-center">
-                        <Gauge className="w-6 h-6 text-yellow-400 mr-1" />
-                        <span>{movementSpeed.toFixed(1)}</span>
-                    </div>
-                    {/* <div className="flex items-center">
-                        <Star className="w-6 h-6 text-purple-400 mr-1" />
-                        <span>{combo}x</span>
-                    </div> */}
                 </div>
-
-                <div className="flex items-center space-x-4">
-                    {/* <div className="flex flex-col items-center">
-                        <Crown className="w-6 h-6 text-yellow-400" />
-                        <span className="text-sm">Lvl {level}</span>
-                    </div> */}
+                <div className="flex items-center space-x-2">
+                    {isImmune && <Shield className="w-5 h-5 text-blue-400 animate-pulse" />}
                     <button
-                            onClick={() => setIsMuted(!isMuted)}
-                            className="p-2 rounded-full hover:bg-gray-700 active:bg-gray-600 transition-colors"
-                        >
-                        {isMuted ? (
-                            <VolumeX className="w-6 h-6" />
-                        ) : (
-                            <Volume2 className="w-6 h-6" />
-                        )}
-                    </button>
-                    <button
-                        onClick={() => setUseJoystick(!useJoystick)}
-                        className="p-2 rounded-full hover:bg-gray-700 active:bg-gray-600 transition-colors"
+                        onClick={() => setIsMuted(!isMuted)}
+                        className="p-2 rounded-full hover:bg-gray-700/50 active:bg-gray-600/50 transition-colors"
                     >
-                        {useJoystick ? <KeyRound className="w-6 h-6" /> : <Gamepad2 className="w-6 h-6" />}
+                        {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
                     </button>
                     <button
                         onClick={() => setShowSettings(!showSettings)}
-                        className="p-2 rounded-full hover:bg-gray-700 active:bg-gray-600 transition-colors"
+                        className="p-2 rounded-full hover:bg-gray-700/50 active:bg-gray-600/50 transition-colors"
                     >
-                        <Settings className="w-6 h-6" />
+                        <Settings className="w-5 h-5" />
                     </button>
                 </div>
             </div>
 
-            {/* Experience Bar */}
-            <div className="relative w-full h-2 bg-gray-700">
+            {/* Experience Bar - Made more visible */}
+            <div className="relative h-1.5 bg-gray-700/50">
                 <div
-                    className="absolute h-full bg-purple-500 transition-all duration-300"
+                    className="absolute h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300"
                     style={{ width: `${(experience / experienceNeeded) * 100}%` }}
                 />
             </div>
@@ -645,7 +626,7 @@ const MovementGame = () => {
                         <img
                             src={She}
                             alt="Player"
-                            className="w-full h-full rounded-full object-cover shadow-lg border-2 border-white"
+                            className="w-full h-full rounded-full object-cover shadow-xl border-2 border-white"
                         />
                         {showPowerUpEffect && (
                             <div className="absolute inset-0 animate-ping rounded-full border-4 border-blue-500" />
@@ -661,7 +642,7 @@ const MovementGame = () => {
                     {powerUps.map((powerUp, index) => (
                         <div
                             key={index}
-                            className="absolute w-12 h-12 animate-bounce"
+                            className="absolute w-10 h-10 md:w-12 md:h-12 animate-bounce"
                             style={{
                                 left: `${powerUp.x}px`,
                                 top: `${powerUp.y}px`,
@@ -671,31 +652,31 @@ const MovementGame = () => {
                             {powerUp.type === 'immunity' && (
                                 <img
                                     src={ME}
-                                    alt="Immunity Power-Up"
+                                    alt="Immunity"
                                     className="w-full h-full rounded-full border-2 border-blue-400 shadow-lg"
                                 />
                             )}
                             {powerUp.type === 'speed' && (
                                 <img
                                     src={US}
-                                    alt="Speed Power-Up"
+                                    alt="Speed"
                                     className="w-full h-full rounded-full border-2 border-yellow-400 shadow-lg"
                                 />
                             )}
                             {powerUp.type === 'extraLife' && (
-                                <div className="w-full h-full rounded-full bg-red-500 shadow-lg flex items-center justify-center">
-                                    <Heart className="w-8 h-8 text-white" />
+                                <div className="w-full h-full rounded-full bg-gradient-to-br from-red-500 to-pink-500 shadow-lg flex items-center justify-center">
+                                    <Heart className="w-6 h-6 text-white" />
                                 </div>
                             )}
                             {powerUp.type === 'scoreBoost' && (
-                                <div className="w-full h-full rounded-full bg-purple-500 shadow-lg flex items-center justify-center">
-                                    <Star className="w-8 h-8 text-white" />
+                                <div className="w-full h-full rounded-full bg-gradient-to-br from-purple-500 to-blue-500 shadow-lg flex items-center justify-center">
+                                    <Star className="w-6 h-6 text-white" />
                                 </div>
                             )}
                         </div>
                     ))}
 
-                    {/* Obstacles */}
+                    {/* Obstacles - Simplified for better mobile visibility */}
                     {obstacles.map((obstacle, index) => (
                         <div
                             key={index}
@@ -707,9 +688,9 @@ const MovementGame = () => {
                         >
                             <div className="flex flex-col items-center">
                                 <div className={`p-2 rounded-full shadow-lg ${obstacle.color} bg-gray-800/90 backdrop-blur-sm`}>
-                                    <obstacle.icon className="w-8 h-8" />
+                                    <obstacle.icon className="w-6 h-6 md:w-8 md:h-8" />
                                 </div>
-                                <span className="mt-1 px-2 py-1 text-sm bg-gray-800/90 rounded-full backdrop-blur-sm">
+                                <span className="mt-1 px-2 py-0.5 text-xs md:text-sm bg-gray-800/90 rounded-full backdrop-blur-sm whitespace-nowrap">
                                     {obstacle.name}
                                 </span>
                             </div>
@@ -718,24 +699,36 @@ const MovementGame = () => {
 
                     {/* Game Over Screen */}
                     {gameOver && (
-                        <div className="absolute inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center">
-                            <div className="text-center p-8 bg-gray-800/90 rounded-2xl max-w-md">
-                                <h2 className="text-3xl font-bold mb-4">Game Over!</h2>
-                                <div className="space-y-4 mb-6">
-                                    <p className="text-xl">Score: {score}</p>
-                                    <p className="text-lg">High Score: {highScore}</p>
-                                    <p className="text-lg">Level: {level}</p>
-                                    <p className="text-lg">Max Combo: {combo}</p>
+                        <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center p-4">
+                            <div className="bg-gray-800/95 p-6 rounded-3xl max-w-sm w-full text-center shadow-2xl">
+                                <h2 className="text-3xl font-bold mb-6 bg-gradient-to-r from-red-500 to-purple-500 bg-clip-text text-transparent">Game Over!</h2>
+                                <div className="grid grid-cols-2 gap-4 mb-6">
+                                    <div className="bg-gray-700/50 p-3 rounded-2xl">
+                                        <p className="text-sm text-gray-400">Score</p>
+                                        <p className="text-xl font-bold">{score}</p>
+                                    </div>
+                                    <div className="bg-gray-700/50 p-3 rounded-2xl">
+                                        <p className="text-sm text-gray-400">High Score</p>
+                                        <p className="text-xl font-bold">{highScore}</p>
+                                    </div>
+                                    <div className="bg-gray-700/50 p-3 rounded-2xl">
+                                        <p className="text-sm text-gray-400">Level</p>
+                                        <p className="text-xl font-bold">{level}</p>
+                                    </div>
+                                    <div className="bg-gray-700/50 p-3 rounded-2xl">
+                                        <p className="text-sm text-gray-400">Max Combo</p>
+                                        <p className="text-xl font-bold">{combo}</p>
+                                    </div>
                                 </div>
                                 {score > highScore && (
-                                    <div className="mb-6 p-4 bg-yellow-500/20 rounded-xl">
+                                    <div className="mb-6 p-4 bg-gradient-to-r from-yellow-500/20 to-orange-500/20 rounded-2xl">
                                         <Trophy className="w-8 h-8 text-yellow-400 mx-auto mb-2" />
                                         <p className="text-yellow-400 font-bold">New High Score!</p>
                                     </div>
                                 )}
                                 <button
                                     onClick={resetGame}
-                                    className="w-full px-6 py-4 bg-blue-500 rounded-xl text-lg font-semibold hover:bg-blue-600 active:bg-blue-700 transition-colors"
+                                    className="w-full px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl text-lg font-semibold hover:from-blue-600 hover:to-blue-700 transition-all transform hover:scale-105 shadow-lg"
                                 >
                                     Play Again
                                 </button>
@@ -745,93 +738,84 @@ const MovementGame = () => {
                 </div>
             </div>
 
-            {/* Mobile Controls */}
-            <div className="fixed bottom-4 left-1/2 -translate-x-1/2">
+            {/* Mobile Controls - Optimized for touch */}
+            <div className="fixed bottom-6 left-1/2 -translate-x-1/2">
                 {useJoystick ? (
-                    <Joystick
-                        size={120}
-                        baseColor="rgba(17, 24, 39, 0.8)"
-                        stickColor="rgba(59, 130, 246, 0.9)"
-                        move={(e) => {
-                            if (!e || !e.direction) return;
-
-                            // Scaling factor to reduce movement speed
-                            const joystickSpeedFactor = 0.25; // Adjust this value to slow down joystick movement
-
-                            switch (e.direction) {
-                                case "FORWARD":
-                                    move("up", joystickSpeedFactor);
-                                    break;
-                                case "BACKWARD":
-                                    move("down", joystickSpeedFactor);
-                                    break;
-                                case "LEFT":
-                                    move("left", joystickSpeedFactor);
-                                    break;
-                                case "RIGHT":
-                                    move("right", joystickSpeedFactor);
-                                    break;
-                            }
-                        }}
-                    />
-
+                    <div className="relative">
+                        <div className="absolute -top-16 left-1/2 -translate-x-1/2 bg-gray-800/80 px-4 py-2 rounded-full text-sm">
+                            Drag to move
+                        </div>
+                        <Joystick
+                            size={120}
+                            baseColor="rgba(17, 24, 39, 0.9)"
+                            stickColor="rgba(59, 130, 246, 0.9)"
+                            move={(e) => {
+                                if (!e || !e.direction) return;
+                                const joystickSpeedFactor = 0.25;
+                                switch (e.direction) {
+                                    case "FORWARD": move("up", joystickSpeedFactor); break;
+                                    case "BACKWARD": move("down", joystickSpeedFactor); break;
+                                    case "LEFT": move("left", joystickSpeedFactor); break;
+                                    case "RIGHT": move("right", joystickSpeedFactor); break;
+                                }
+                            }}
+                        />
+                    </div>
                 ) : (
-                    <div className="grid grid-cols-3 gap-2 bg-gray-800/80 p-4 rounded-2xl backdrop-blur-sm">
+                    <div className="grid grid-cols-3 gap-2 bg-gray-800/90 p-3 rounded-2xl backdrop-blur-sm">
                         <div />
                         <button
                             onClick={() => move('up')}
-                            className="p-4 bg-gray-700/80 rounded-xl hover:bg-gray-600 active:bg-gray-500 flex items-center justify-center transition-colors"
+                            className="p-4 bg-gray-700/80 rounded-xl active:bg-gray-600/80 transition-colors touch-manipulation"
                             disabled={gameOver}
                         >
-                            <ArrowUp className="w-8 h-8" />
+                            <ArrowUp className="w-6 h-6" />
                         </button>
                         <div />
-
                         <button
                             onClick={() => move('left')}
-                            className="p-4 bg-gray-700/80 rounded-xl hover:bg-gray-600 active:bg-gray-500 flex items-center justify-center transition-colors"
+                            className="p-4 bg-gray-700/80 rounded-xl active:bg-gray-600/80 transition-colors touch-manipulation"
                             disabled={gameOver}
                         >
-                            <ArrowLeft className="w-8 h-8" />
+                            <ArrowLeft className="w-6 h-6" />
                         </button>
                         <button
                             onClick={() => move('down')}
-                            className="p-4 bg-gray-700/80 rounded-xl hover:bg-gray-600 active:bg-gray-500 flex items-center justify-center transition-colors"
+                            className="p-4 bg-gray-700/80 rounded-xl active:bg-gray-600/80 transition-colors touch-manipulation"
                             disabled={gameOver}
                         >
-                            <ArrowDown className="w-8 h-8" />
+                            <ArrowDown className="w-6 h-6" />
                         </button>
                         <button
                             onClick={() => move('right')}
-                            className="p-4 bg-gray-700/80 rounded-xl hover:bg-gray-600 active:bg-gray-500 flex items-center justify-center transition-colors"
+                            className="p-4 bg-gray-700/80 rounded-xl active:bg-gray-600/80 transition-colors touch-manipulation"
                             disabled={gameOver}
                         >
-                            <ArrowRight className="w-8 h-8" />
+                            <ArrowRight className="w-6 h-6" />
                         </button>
                     </div>
                 )}
             </div>
 
-            {/* Settings Modal */}
+            {/* Settings Modal - Optimized for mobile */}
             {showSettings && (
-                <div className="absolute inset-0 bg-black/90 backdrop-blur-md flex items-center justify-center z-50">
-                    <div className="bg-gray-800 p-6 rounded-2xl w-11/12 max-w-md m-4">
+                <div className="absolute inset-0 bg-black/95 backdrop-blur-md flex items-center justify-center z-50 p-4">
+                    <div className="bg-gray-800/95 p-6 rounded-3xl w-full max-w-md shadow-2xl">
                         <h2 className="text-xl font-bold mb-6">Game Settings</h2>
-
                         <div className="space-y-6">
                             <div>
-                                <label className="block mb-2 text-sm font-medium">Control Type</label>
+                                <label className="block mb-2 text-sm font-medium text-gray-300">Control Type</label>
                                 <div className="flex gap-3">
                                     <button
                                         onClick={() => setUseJoystick(true)}
-                                        className={`flex-1 p-4 rounded-xl flex items-center justify-center gap-2 transition-colors ${useJoystick ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+                                        className={`flex-1 p-4 rounded-xl flex items-center justify-center gap-2 transition-all ${useJoystick ? 'bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg' : 'bg-gray-700/50'}`}
                                     >
                                         <Gamepad2 className="w-5 h-5" />
                                         <span>Joystick</span>
                                     </button>
                                     <button
                                         onClick={() => setUseJoystick(false)}
-                                        className={`flex-1 p-4 rounded-xl flex items-center justify-center gap-2 transition-colors ${!useJoystick ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-700 hover:bg-gray-600'}`}
+                                        className={`flex-1 p-4 rounded-xl flex items-center justify-center gap-2 transition-all ${!useJoystick ? 'bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg' : 'bg-gray-700/50'}`}
                                     >
                                         <KeyRound className="w-5 h-5" />
                                         <span>Arrows</span>
@@ -840,25 +824,33 @@ const MovementGame = () => {
                             </div>
 
                             <div>
-                                <label className="block mb-2 text-sm font-medium">Difficulty</label>
-                                <select
-                                    value={difficulty}
-                                    onChange={(e) => setDifficulty(e.target.value)}
-                                    className="w-full px-4 py-3 bg-gray-700 rounded-xl text-white focus:ring-2 focus:ring-blue-500"
-                                >
-                                    <option value="easy">Easy</option>
-                                    <option value="normal">Normal</option>
-                                    <option value="hard">Hard</option>
-                                </select>
+                                <label className="block mb-2 text-sm font-medium text-gray-300">Difficulty</label>
+                                <div className="grid grid-cols-3 gap-3">
+                                    {['easy', 'normal', 'hard'].map((diff) => (
+                                        <button
+                                            key={diff}
+                                            onClick={() => setDifficulty(diff)}
+                                            className={`p-3 rounded-xl capitalize transition-all ${difficulty === diff
+                                                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg'
+                                                    : 'bg-gray-700/50'
+                                                }`}
+                                        >
+                                            {diff}
+                                        </button>
+                                    ))}
+                                </div>
                             </div>
 
                             <div>
-                                <label className="block mb-2 text-sm font-medium">Background</label>
+                                <label className="block mb-2 text-sm font-medium text-gray-300">Background</label>
                                 <div className="grid grid-cols-3 gap-3">
                                     {backgrounds.map((bg, index) => (
                                         <button
                                             key={index}
-                                            className={`relative aspect-video rounded-lg overflow-hidden border-2 transition-all ${selectedBackground === bg.image ? 'border-blue-500 scale-105' : 'border-transparent'}`}
+                                            className={`relative aspect-video rounded-xl overflow-hidden border-2 transition-all ${selectedBackground === bg.image
+                                                    ? 'border-blue-500 scale-105 shadow-lg'
+                                                    : 'border-transparent'
+                                                }`}
                                             onClick={() => setSelectedBackground(bg.image)}
                                         >
                                             <img
@@ -875,26 +867,50 @@ const MovementGame = () => {
                             </div>
 
                             <div>
-                                <label className="block mb-2 text-sm font-medium">Sound</label>
+                                <label className="block mb-2 text-sm font-medium text-gray-300">Sound</label>
                                 <button
                                     onClick={() => setIsMuted(!isMuted)}
-                                    className={`w-full p-4 rounded-xl flex items-center justify-center gap-2 transition-colors ${isMuted ? 'bg-gray-700 hover:bg-gray-600' : 'bg-blue-500 hover:bg-blue-600'}`}
+                                    className={`w-full p-4 rounded-xl flex items-center justify-center gap-2 transition-all ${isMuted
+                                            ? 'bg-gray-700/50'
+                                            : 'bg-gradient-to-r from-blue-500 to-blue-600 shadow-lg'
+                                        }`}
                                 >
                                     {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
                                     <span>{isMuted ? 'Unmute' : 'Mute'} Sound</span>
                                 </button>
                             </div>
-                        </div>
 
-                        <button
-                            onClick={() => setShowSettings(false)}
-                            className="mt-6 w-full px-4 py-3 bg-blue-500 rounded-xl font-medium hover:bg-blue-600 active:bg-blue-700 transition-colors"
-                        >
-                            Done
-                        </button>
+                            <div className="pt-6 flex flex-col sm:flex-row gap-3">
+                                <button
+                                    onClick={() => setShowSettings(false)}
+                                    className="flex-1 px-6 py-4 bg-gray-700/50 rounded-xl font-medium hover:bg-gray-600/50 active:bg-gray-500/50 transition-all"
+                                >
+                                    Cancel
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        setShowSettings(false);
+                                        resetGame();
+                                    }}
+                                    className="flex-1 px-6 py-4 bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl font-medium hover:from-blue-600 hover:to-blue-700 active:from-blue-700 active:to-blue-800 transition-all shadow-lg"
+                                >
+                                    Save & Restart
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
+
+            {/* Quick Tips Overlay - For new players */}
+            {gameStarted && !showSettings && (
+                <div className="fixed bottom-32 left-1/2 -translate-x-1/2 bg-gray-800/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm pointer-events-none animate-fade-out">
+                    {useJoystick ? "Use the joystick to move" : "Use arrow buttons to move"}
+                </div>
+            )}
+
+            {/* Achievement Notification */}
+            {/* <AchievementNotification achievements={achievements} setAchievements={setAchievements} /> */}
         </div>
     );
 };
