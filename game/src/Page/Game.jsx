@@ -220,12 +220,12 @@ const MovementGame = () => {
 
 
     // Fixed move function with proper boundary checking
-    const move = (direction) => {
+    const move = (direction, speedFactor = 1) => {
         if (gameOver || !gameStarted) return;
 
         setPosition(prev => {
             const newPos = { ...prev };
-            const speed = powerUpActive ? movementSpeed * 1.5 : movementSpeed;
+            const speed = (powerUpActive ? movementSpeed * 1.5 : movementSpeed) * speedFactor; // Apply speed factor
 
             switch (direction) {
                 case 'up':
@@ -259,6 +259,7 @@ const MovementGame = () => {
             return newPos;
         });
     };
+
 
     // Fixed collision handler
     const handleCollision = () => {
@@ -753,14 +754,27 @@ const MovementGame = () => {
                         stickColor="rgba(59, 130, 246, 0.9)"
                         move={(e) => {
                             if (!e || !e.direction) return;
+
+                            // Scaling factor to reduce movement speed
+                            const joystickSpeedFactor = 0.25; // Adjust this value to slow down joystick movement
+
                             switch (e.direction) {
-                                case "FORWARD": move("up"); break;
-                                case "BACKWARD": move("down"); break;
-                                case "LEFT": move("left"); break;
-                                case "RIGHT": move("right"); break;
+                                case "FORWARD":
+                                    move("up", joystickSpeedFactor);
+                                    break;
+                                case "BACKWARD":
+                                    move("down", joystickSpeedFactor);
+                                    break;
+                                case "LEFT":
+                                    move("left", joystickSpeedFactor);
+                                    break;
+                                case "RIGHT":
+                                    move("right", joystickSpeedFactor);
+                                    break;
                             }
                         }}
                     />
+
                 ) : (
                     <div className="grid grid-cols-3 gap-2 bg-gray-800/80 p-4 rounded-2xl backdrop-blur-sm">
                         <div />
